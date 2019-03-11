@@ -73,10 +73,14 @@ public class AccountManager
         this.groupAccountIndex = new HashMap<>();
         this.idIndex = new HashMap<>();
 
-        for (BotAccount account : accounts) for (RGroup rGroup : account.getHttpApi().getGroupList().getData())
-        {
-            if (!groupAccountIndex.containsKey(rGroup.groupId)) groupAccountIndex.put(rGroup.groupId, new HashMap<>());
-            this.groupAccountIndex.get(rGroup.groupId).put(account, 0L);
+        for (BotAccount account : accounts) {
+            for (RGroup rGroup : account.getHttpApi().getGroupList().getData())
+            {
+                if (!groupAccountIndex.containsKey(rGroup.groupId)) {
+                    groupAccountIndex.put(rGroup.groupId, new HashMap<>());
+                }
+                this.groupAccountIndex.get(rGroup.groupId).put(account, 0L);
+            }
             this.idIndex.put(account.getId(), account);
         }
     }

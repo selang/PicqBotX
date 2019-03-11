@@ -29,10 +29,10 @@ public class TestBot
                 //new BotAccount("One", bot.getEventManager(), "127.0.0.1", 31091),
                 //new BotAccount("Two", bot.getEventManager(), "127.0.0.1", 31090)
         //);
-
+        bot.setHttpApiVersionDetection(".*");
         bot.setMaintenanceMode(false);
         bot.setUniversalHyExpSupport(true);
-
+        
         // 设置异步
         bot.setUseAsync(true);
 

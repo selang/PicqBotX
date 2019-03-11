@@ -2,6 +2,8 @@ package cc.moecraft.test.icq.listeners;
 
 import cc.moecraft.icq.event.EventHandler;
 import cc.moecraft.icq.event.IcqListener;
+import cc.moecraft.icq.event.events.notice.groupmember.decrease.EventNoticeGroupMemberLeave;
+import cc.moecraft.icq.event.events.notice.groupmember.increase.EventNoticeGroupMemberApprove;
 import cc.moecraft.icq.event.events.request.EventFriendRequest;
 import cc.moecraft.icq.event.events.request.EventGroupAddRequest;
 import cc.moecraft.icq.event.events.request.EventGroupInviteRequest;
@@ -14,38 +16,32 @@ import cc.moecraft.icq.event.events.request.EventGroupInviteRequest;
  *
  * @author Hykilpikonna
  */
-public class RequestListener extends IcqListener
-{
+public class RequestListener extends IcqListener {
     // 接受好友请求的字符 (只要contains就行) 虽然知道有只要输一个字母就能过的bug但是还是这样写了...
     private static final String acceptedFriendRequestMessage = "hykilpikonna 小桂 admin@moecraft.cc hydev";
     // 接受加群申请的字符
     private static final String acceptedGroupRequestMessage = "hyosuircbot iosu hyconfiglib hylogger osu机器人 hyultimateplugin languageapi hytranscript";
 
     @EventHandler
-    public void onFriendRequest(EventFriendRequest event)
-    {
+    public void onFriendRequest(EventFriendRequest event) {
         // 因为我这里设置的问题是 "开发我的人叫什么?" 所以答案这样判断...
         String answer = event.getComment().replaceAll("问题.*:开发我的人叫什么.*\n回答:", "");
-        if (acceptedFriendRequestMessage.contains(answer.toLowerCase()))
-        {
+        if (acceptedFriendRequestMessage.contains(answer.toLowerCase())) {
             event.accept();
-        }
-        else
-        {
+        } else {
             event.reject("开发我的人不叫\"" + answer + "\"哦! 再试试吧!"); // TODO: 把这些输错的人记录下来
         }
     }
 
     @EventHandler
-    public void onGroupInvite(EventGroupInviteRequest event)
-    {
+    public void onGroupInvite(EventGroupInviteRequest event) {
         // 接受所有群邀请
         event.accept();
     }
 
     @EventHandler
-    public void onGroupAdd(EventGroupAddRequest event)
-    {
+    public void onGroupAdd(EventGroupAddRequest event) {
+        System.out.println(String.format("加群：%s，用户号码：%s", event.getGroupId(), event.getUserId()));
         event.accept(); // 接受所有
 
         /*String answer = event.getComment().replace("问题：填任意一个HyDEV的项目\n答案：", "");
@@ -57,5 +53,15 @@ public class RequestListener extends IcqListener
         {
             event.reject("\"" + answer + "\"不是HyDEV的项目哦! 再试试吧!"); // TODO: 把这些输错的人记录下来
         }*/
+    }
+
+    @EventHandler
+    public void onGroupLeave(EventNoticeGroupMemberLeave event) {
+        System.out.println(String.format("离开群：%s，用户号码：%s", event.getGroupId(), event.getUserId()));
+    }
+
+    @EventHandler
+    public void onGroupApprove(EventNoticeGroupMemberApprove event) {
+        System.out.println(String.format("同意进群：%s，用户号码：%s", event.getGroupId(), event.getUserId()));
     }
 }

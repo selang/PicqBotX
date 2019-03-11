@@ -403,7 +403,7 @@ public class PicqBotX
      */
     public void setUniversalHyExpSupport(boolean value)
     {
-        hyExpressionResolver = value ? new HyExpressionResolver() : null;
+        hyExpressionResolver = value ? new HyExpressionResolver(value) : null;
     }
 
     /**
